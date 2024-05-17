@@ -16,20 +16,22 @@ const Login = ({ doLogin }) => {
       <label>
         Username:
         <input
-          type="text"
+          type='text'
           data-testid='username'
           value={username}
-          onChange={(e) => setUsername(e.target.value)} />
+          onChange={(e) => setUsername(e.target.value)}
+        />
       </label>
       <label>
         Password:
         <input
-          type="password"
+          type='password'
           value={password}
           data-testid='password'
-          onChange={(e) => setPassword(e.target.value)} />
+          onChange={(e) => setPassword(e.target.value)}
+        />
       </label>
-      <input type="submit" value="Login" />
+      <input type='submit' value='Login' />
     </form>
   )
 }
