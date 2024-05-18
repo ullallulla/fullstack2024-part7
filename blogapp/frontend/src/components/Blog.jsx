@@ -1,9 +1,13 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import storage from '../services/storage'
+import { useDispatch } from 'react-redux'
+import { deleteBlog } from '../reducers/blogReducer'
+import { setNotification } from '../reducers/notificationReducer'
 
-const Blog = ({ blog, handleVote, handleDelete }) => {
+const Blog = ({ blog, handleVote }) => {
   const [visible, setVisible] = useState(false)
+  const dispatch = useDispatch()
 
   const nameOfUser = blog.user ? blog.user.name : 'anonymous'
 
@@ -12,6 +16,10 @@ const Blog = ({ blog, handleVote, handleDelete }) => {
     padding: 10,
     borderWidth: 1,
     marginBottom: 5,
+  }
+  const handleDelete = (blog) => {
+    dispatch(deleteBlog(blog))
+    dispatch(setNotification(`Blog ${blog.title}, by ${blog.author} removed`, 5))
   }
 
   const canRemove = blog.user ? blog.user.username === storage.me() : true
@@ -53,7 +61,6 @@ Blog.propTypes = {
     user: PropTypes.object,
   }).isRequired,
   handleVote: PropTypes.func.isRequired,
-  handleDelete: PropTypes.func.isRequired,
 }
 
 export default Blog

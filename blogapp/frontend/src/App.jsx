@@ -1,5 +1,7 @@
 import { useState, useEffect, createRef } from 'react'
 import { setNotification } from './reducers/notificationReducer'
+import { useDispatch, useSelector } from 'react-redux'
+import { initializeBlogs } from './reducers/blogReducer'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import storage from './services/storage'
@@ -10,12 +12,15 @@ import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 
 const App = () => {
-  const [blogs, setBlogs] = useState([])
+  const dispatch = useDispatch()
+
   const [user, setUser] = useState(null)
 
   useEffect(() => {
-    blogService.getAll().then((blogs) => setBlogs(blogs))
+    dispatch(initializeBlogs())
   }, [])
+
+  const blogs = useSelector(state => state.blogs)
 
   useEffect(() => {
     const user = storage.loadUser()
@@ -37,13 +42,6 @@ const App = () => {
     }
   }
 
-  const handleCreate = async (blog) => {
-    const newBlog = await blogService.create(blog)
-    setBlogs(blogs.concat(newBlog))
-    setNotification(`Blog created: ${newBlog.title}, ${newBlog.author}`)
-    blogFormRef.current.toggleVisibility()
-  }
-
   const handleVote = async (blog) => {
     console.log('updating', blog)
     const updatedBlog = await blogService.update(blog.id, {
@@ -61,13 +59,13 @@ const App = () => {
     setNotification(`Bye, ${user.name}!`)
   }
 
-  const handleDelete = async (blog) => {
-    if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
-      await blogService.remove(blog.id)
-      setBlogs(blogs.filter((b) => b.id !== blog.id))
-      setNotification(`Blog ${blog.title}, by ${blog.author} removed`)
-    }
-  }
+  // const handleDelete = async (blog) => {
+  //   if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
+  //     await blogService.remove(blog.id)
+  //     setBlogs(blogs.filter((b) => b.id !== blog.id))
+  //     setNotification(`Blog ${blog.title}, by ${blog.author} removed`)
+  //   }
+  // }
 
   if (!user) {
     return (
@@ -90,14 +88,14 @@ const App = () => {
         <button onClick={handleLogout}>logout</button>
       </div>
       <Togglable buttonLabel='create new blog' ref={blogFormRef}>
-        <NewBlog doCreate={handleCreate} />
+        <NewBlog blogFormRef={blogFormRef} />
       </Togglable>
-      {blogs.sort(byLikes).map((blog) => (
+      {[...blogs].sort(byLikes).map((blog) => (
         <Blog
           key={blog.id}
           blog={blog}
           handleVote={handleVote}
-          handleDelete={handleDelete}
+          //handleDelete={handleDelete}
         />
       ))}
     </div>

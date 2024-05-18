@@ -1,6 +1,10 @@
 import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { createBlog } from '../reducers/blogReducer'
+import { setNotification } from '../reducers/notificationReducer'
 
-const NewBlog = ({ doCreate }) => {
+const NewBlog = ({ blogFormRef }) => {
+  const dispatch = useDispatch()
   const [title, setTitle] = useState('')
   const [url, setUrl] = useState('')
   const [author, setAuthor] = useState('')
@@ -19,7 +23,9 @@ const NewBlog = ({ doCreate }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault()
-    doCreate({ title, url, author })
+    dispatch(createBlog({ title, url, author }))
+    dispatch(setNotification(`Blog created: ${title}, ${author}`, 5))
+    blogFormRef.current.toggleVisibility()
     setAuthor('')
     setTitle('')
     setUrl('')
