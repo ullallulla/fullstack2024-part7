@@ -7,12 +7,12 @@ import { initializeBlogs } from './reducers/blogReducer'
 import blogService from './services/blogs'
 import Login from './components/Login'
 import Blog from './components/Blog'
-import NewBlog from './components/NewBlog'
 import Notification from './components/Notification'
-import Togglable from './components/Togglable'
-import { initializeUser, handleLogout } from './reducers/userReducer'
+import BlogList from './components/BlogList'
+import { initializeLoggedInUser, handleLogout, initializeBlogUsers } from './reducers/userReducer'
 import Users from './components/Users'
 import User from './components/User'
+import NavBar from './components/NavBar'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -22,11 +22,15 @@ const App = () => {
   }, [])
 
   useEffect(() => {
-    dispatch(initializeUser())
+    dispatch(initializeLoggedInUser())
   }, [])
 
+  useEffect(() => {
+    dispatch(initializeBlogUsers())
+  })
+
   const blogs = useSelector(state => state.blogs)
-  const user = useSelector(state => state.user)
+  const user = useSelector(state => state.user.loggedInUser)
 
   const blogFormRef = createRef()
 
@@ -61,31 +65,13 @@ const App = () => {
     )
   }
 
-  const byLikes = (a, b) => b.likes - a.likes
 
-  const BlogList = () => {
-    return (
-      <div>
-        <Togglable buttonLabel='create new blog' ref={blogFormRef}>
-          <NewBlog blogFormRef={blogFormRef} />
-        </Togglable>
-        {[...blogs].sort(byLikes).map((blog) => (
-          <div key={blog.id}>
-            <Link to={`/blogs/${blog.id}`}>
-              <Blog
-                key={blog.id}
-                blog={blog}
-                handleVote={handleVote}
-              />
-            </Link>
-          </div>
-        ))}
-      </div>
-    )
-  }
+
+
 
   return (
     <div>
+      <NavBar />
       <h2>blogs</h2>
       <Notification />
       <div>
@@ -103,7 +89,7 @@ const App = () => {
         />
       ))} */}
       <Routes>
-        <Route path="/" element={<BlogList />}/>
+        <Route path="/" element={<BlogList blogFormRef={blogFormRef} handleVote={handleVote} />} />
         <Route path="/users" element={<Users />}/>
         <Route path="/blogs/:id" element={<Blog blog={blog} handleVote={handleVote}/>} />
         <Route path="/users/:id" element={<User user={user}/>}/>

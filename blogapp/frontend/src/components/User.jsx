@@ -1,16 +1,11 @@
 import { useState, useEffect } from 'react'
 import userService from '../services/users'
 import { useMatch } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
 const User = () => {
-  const [users, setUsers] = useState([])
+  const users = useSelector(state => state.user.users)
 
-
-  useEffect(() => {
-    userService.getAll().then(users =>
-      setUsers(users)
-    )
-  }, [])
   const match = useMatch('users/:id')
 
   const user = match

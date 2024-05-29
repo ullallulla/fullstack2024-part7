@@ -5,24 +5,11 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
 const Users = () => {
-  const [users, setUsers] = useState([])
-  // const dispatch = useDispatch()
-  // const loggedInUser = useSelector(state => state.user)
 
-  useEffect(() => {
-    userService.getAll().then(users =>
-      setUsers(users)
-    )
-  }, [])
+  const users = useSelector(state => state.user.users)
 
-  console.log(users)
   return (
     <div>
-      {/* <h2>blogs</h2>
-      <div>
-        {loggedInUser.name} logged in
-        <button onClick={() => dispatch(handleLogout(loggedInUser))}>logout</button>
-      </div> */}
       <h2>Users</h2>
       <table>
         <tbody>
