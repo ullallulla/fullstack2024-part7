@@ -34,6 +34,27 @@ router.post('/', userExtractor, async (request, response) => {
   response.status(201).json(savedBlog)
 })
 
+router.post('/:id/comments', userExtractor, async (request, response) => {
+  const blog = await Blog.findById(request.params.id)
+
+  const user = request.user
+  const comment = request.body
+
+  if (!user) {
+    return response.status(403).json({ error: 'user missing' })
+  }
+
+  if (!comment) {
+    return response.status(400).json({ error: 'comment missing' })
+  }
+
+  blog.comments = blog.comments.concat(comment)
+
+  const updatedBlog = await blog.save()
+
+  response.status(201).json(updatedBlog)
+})
+
 router.delete('/:id', userExtractor, async (request, response) => {
   const user = request.user
 

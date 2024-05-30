@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import storage from '../services/storage'
 import { useDispatch } from 'react-redux'
-import { deleteBlog } from '../reducers/blogReducer'
+import { deleteBlog, createComment } from '../reducers/blogReducer'
 import { setNotification } from '../reducers/notificationReducer'
 
 const Blog = ({ blog, handleVote }) => {
@@ -10,7 +10,8 @@ const Blog = ({ blog, handleVote }) => {
   const dispatch = useDispatch()
 
   const nameOfUser = blog.user ? blog.user.name : 'anonymous'
-
+  const comments = blog.comments
+  console.log(comments, 'blog comments')
   const style = {
     border: 'solid',
     padding: 10,
@@ -22,35 +23,16 @@ const Blog = ({ blog, handleVote }) => {
     dispatch(setNotification(`Blog ${blog.title}, by ${blog.author} removed`, 5))
   }
 
+  const addComment = (event) => {
+    event.preventDefault()
+    const content = event.target.content.value
+    event.target.content.value = ''
+    dispatch(createComment(blog, { content }))
+  }
+
   const canRemove = blog.user ? blog.user.username === storage.me() : true
 
   console.log(blog.user, storage.me(), canRemove)
-
-  // return (
-  //   <div style={style} className='blog'>
-  //     {blog.title} by {blog.author}
-  //     <button style={{ marginLeft: 3 }} onClick={() => setVisible(!visible)}>
-  //       {visible ? 'hide' : 'view'}
-  //     </button>
-  //     {visible && (
-  //       <div>
-  //         <div>
-  //           <a href={blog.url}>{blog.url}</a>
-  //         </div>
-  //         <div>
-  //           likes {blog.likes}
-  //           <button style={{ marginLeft: 3 }} onClick={() => handleVote(blog)}>
-  //             like
-  //           </button>
-  //         </div>
-  //         <div>{nameOfUser}</div>
-  //         {canRemove && (
-  //           <button onClick={() => handleDelete(blog)}>remove</button>
-  //         )}
-  //       </div>
-  //     )}
-  //   </div>
-  // )
 
   return (
     <div className='blog'>
@@ -72,6 +54,25 @@ const Blog = ({ blog, handleVote }) => {
           <button onClick={() => handleDelete(blog)}>remove</button>
         )}
         <h3>comments</h3>
+        <div>
+
+          <form onSubmit={addComment}>
+            <div>
+              <input
+                type='text'
+                name='content'
+              />
+            </div>
+            <button type='submit'>add comment</button>
+          </form>
+        </div>
+        {comments.map((comment) => (
+          <div key={comment.id}>
+            <div>
+              <li>{comment.content}</li>
+            </div>
+          </div>
+        ))}
       </div>
 
     </div>
