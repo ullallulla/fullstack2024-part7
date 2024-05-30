@@ -9,6 +9,12 @@ const BlogList = ({ blogFormRef, handleVote }) => {
 
   const byLikes = (a, b) => b.likes - a.likes
 
+  const style = {
+    border: 'solid',
+    padding: 10,
+    borderWidth: 1,
+    marginBottom: 5,
+  }
   return (
     <div>
       <Togglable buttonLabel='create new blog' ref={blogFormRef}>
@@ -17,11 +23,9 @@ const BlogList = ({ blogFormRef, handleVote }) => {
       {[...blogs].sort(byLikes).map((blog) => (
         <div key={blog.id}>
           <Link to={`/blogs/${blog.id}`}>
-            <Blog
-              key={blog.id}
-              blog={blog}
-              handleVote={handleVote}
-            />
+            <div style={style}>
+              {blog.title} by {blog.author}
+            </div>
           </Link>
         </div>
       ))}

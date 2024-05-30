@@ -26,29 +26,54 @@ const Blog = ({ blog, handleVote }) => {
 
   console.log(blog.user, storage.me(), canRemove)
 
+  // return (
+  //   <div style={style} className='blog'>
+  //     {blog.title} by {blog.author}
+  //     <button style={{ marginLeft: 3 }} onClick={() => setVisible(!visible)}>
+  //       {visible ? 'hide' : 'view'}
+  //     </button>
+  //     {visible && (
+  //       <div>
+  //         <div>
+  //           <a href={blog.url}>{blog.url}</a>
+  //         </div>
+  //         <div>
+  //           likes {blog.likes}
+  //           <button style={{ marginLeft: 3 }} onClick={() => handleVote(blog)}>
+  //             like
+  //           </button>
+  //         </div>
+  //         <div>{nameOfUser}</div>
+  //         {canRemove && (
+  //           <button onClick={() => handleDelete(blog)}>remove</button>
+  //         )}
+  //       </div>
+  //     )}
+  //   </div>
+  // )
+
   return (
-    <div style={style} className='blog'>
-      {blog.title} by {blog.author}
-      <button style={{ marginLeft: 3 }} onClick={() => setVisible(!visible)}>
-        {visible ? 'hide' : 'view'}
-      </button>
-      {visible && (
+    <div className='blog'>
+
+      <h1>{blog.title} by {blog.author}</h1>
+
+      <div>
         <div>
-          <div>
-            <a href={blog.url}>{blog.url}</a>
-          </div>
-          <div>
-            likes {blog.likes}
-            <button style={{ marginLeft: 3 }} onClick={() => handleVote(blog)}>
-              like
-            </button>
-          </div>
-          <div>{nameOfUser}</div>
-          {canRemove && (
-            <button onClick={() => handleDelete(blog)}>remove</button>
-          )}
+          <a href={blog.url}>{blog.url}</a>
         </div>
-      )}
+        <div>
+            likes {blog.likes}
+          <button style={{ marginLeft: 3 }} onClick={() => handleVote(blog)}>
+              like
+          </button>
+        </div>
+        <div>added by {nameOfUser}</div>
+        {canRemove && (
+          <button onClick={() => handleDelete(blog)}>remove</button>
+        )}
+        <h3>comments</h3>
+      </div>
+
     </div>
   )
 }

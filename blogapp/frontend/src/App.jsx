@@ -51,9 +51,6 @@ const App = () => {
     setBlogs(blogs.map((b) => (b.id === blog.id ? updatedBlog : b)))
   }
 
-  const doLogout = () => {
-    dispatch(handleLogout(user))
-  }
 
   if (!user) {
     return (
@@ -66,28 +63,11 @@ const App = () => {
   }
 
 
-
-
-
   return (
     <div>
       <NavBar />
-      <h2>blogs</h2>
+      <h2>blog app</h2>
       <Notification />
-      <div>
-        {user.name} logged in
-        <button onClick={doLogout}>logout</button>
-      </div>
-      {/* <Togglable buttonLabel='create new blog' ref={blogFormRef}>
-        <NewBlog blogFormRef={blogFormRef} />
-      </Togglable>
-      {[...blogs].sort(byLikes).map((blog) => (
-        <Blog
-          key={blog.id}
-          blog={blog}
-          handleVote={handleVote}
-        />
-      ))} */}
       <Routes>
         <Route path="/" element={<BlogList blogFormRef={blogFormRef} handleVote={handleVote} />} />
         <Route path="/users" element={<Users />}/>

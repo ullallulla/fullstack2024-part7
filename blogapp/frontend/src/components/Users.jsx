@@ -16,7 +16,7 @@ const Users = () => {
           <tr>
             <td>
             </td>
-            <td>blogs created</td>
+            <td><strong>blogs created</strong></td>
           </tr>
           {users.map((user) =>
             <tr key={user.id}>
