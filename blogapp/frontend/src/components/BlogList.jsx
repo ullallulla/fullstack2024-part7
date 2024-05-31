@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux'
 import { List, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material'
 import FeedIcon from '@mui/icons-material/Feed'
 
-const BlogList = ({ blogFormRef, handleVote }) => {
+const BlogList = ({ blogFormRef }) => {
   const blogs = useSelector(state => state.blogs)
 
   const byLikes = (a, b) => b.likes - a.likes
@@ -18,20 +18,6 @@ const BlogList = ({ blogFormRef, handleVote }) => {
     marginBottom: 5,
   }
   return (
-    // <div>
-    //   <Togglable buttonLabel='create new blog' ref={blogFormRef}>
-    //     <NewBlog blogFormRef={blogFormRef} />
-    //   </Togglable>
-    //   {[...blogs].sort(byLikes).map((blog) => (
-    //     <div key={blog.id}>
-    //       <Link to={`/blogs/${blog.id}`}>
-    //         <div style={style}>
-    //           {blog.title} by {blog.author}
-    //         </div>
-    //       </Link>
-    //     </div>
-    //   ))}
-    // </div>
     <div>
       <Togglable buttonLabel='create new blog' ref={blogFormRef}>
         <NewBlog blogFormRef={blogFormRef} />

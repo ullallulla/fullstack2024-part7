@@ -7,8 +7,9 @@ import { setNotification } from '../reducers/notificationReducer'
 import { List, ListItem, ListItemButton, ListItemText, Typography, Box, Grid, TextField } from '@mui/material'
 import { Link } from 'react-router-dom'
 import { Button } from '@mui/material'
+import { handleVote } from '../reducers/blogReducer'
 
-const Blog = ({ blog, handleVote }) => {
+const Blog = ({ blog }) => {
   const [visible, setVisible] = useState(false)
   const dispatch = useDispatch()
 
@@ -31,7 +32,10 @@ const Blog = ({ blog, handleVote }) => {
     event.target.content.value = ''
     dispatch(createComment(blog, { content }))
   }
-
+  const voteBlog = (blog) => {
+    dispatch(handleVote(blog))
+    dispatch(setNotification(`You liked ${blog.title} by ${blog.author}`, 5))
+  }
   const canRemove = blog.user ? blog.user.username === storage.me() : true
 
   console.log(blog.user, storage.me(), canRemove)
@@ -48,7 +52,7 @@ const Blog = ({ blog, handleVote }) => {
             <Typography>likes {blog.likes}</Typography>
           </Grid>
           <Grid item>
-            <Button variant="contained" color="secondary" onClick={() => handleVote(blog)}>
+            <Button variant="contained" color="secondary" onClick={() => voteBlog(blog)}>
               like
             </Button>
           </Grid>

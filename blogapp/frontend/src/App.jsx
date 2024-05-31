@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
 import { useMatch, useNavigate } from 'react-router-dom'
 import { setNotification } from './reducers/notificationReducer'
 import { useDispatch, useSelector } from 'react-redux'
-import { initializeBlogs } from './reducers/blogReducer'
+import { initializeBlogs, handleVote } from './reducers/blogReducer'
 import blogService from './services/blogs'
 import Login from './components/Login'
 import Blog from './components/Blog'
@@ -41,16 +41,6 @@ const App = () => {
     ? blogs.find(blog => blog.id === match.params.id)
     : null
 
-  const handleVote = async (blog) => {
-    console.log('updating', blog)
-    const updatedBlog = await blogService.update(blog.id, {
-      ...blog,
-      likes: blog.likes + 1,
-    })
-
-    setNotification(`You liked ${updatedBlog.title} by ${updatedBlog.author}`)
-    setBlogs(blogs.map((b) => (b.id === blog.id ? updatedBlog : b)))
-  }
 
 
   if (!user) {
@@ -74,9 +64,9 @@ const App = () => {
       </Typography>
       <Notification />
       <Routes>
-        <Route path="/" element={<BlogList blogFormRef={blogFormRef} handleVote={handleVote} />} />
+        <Route path="/" element={<BlogList blogFormRef={blogFormRef} />} />
         <Route path="/users" element={<Users />}/>
-        <Route path="/blogs/:id" element={<Blog blog={blog} handleVote={handleVote}/>} />
+        <Route path="/blogs/:id" element={<Blog blog={blog}/>} />
         <Route path="/users/:id" element={<User user={user}/>}/>
       </Routes>
     </div>
