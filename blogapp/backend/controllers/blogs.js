@@ -35,7 +35,7 @@ router.post('/', userExtractor, async (request, response) => {
 })
 
 router.post('/:id/comments', userExtractor, async (request, response) => {
-  const blog = await Blog.findById(request.params.id)
+  const blog = await Blog.findById(request.params.id).populate('user', { username: 1, name: 1})
 
   const user = request.user
   const comment = request.body
