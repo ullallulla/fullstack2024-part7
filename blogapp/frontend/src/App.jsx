@@ -13,6 +13,7 @@ import { initializeLoggedInUser, handleLogout, initializeBlogUsers } from './red
 import Users from './components/Users'
 import User from './components/User'
 import NavBar from './components/NavBar'
+import { Typography } from '@mui/material'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -55,7 +56,9 @@ const App = () => {
   if (!user) {
     return (
       <div>
-        <h2>blogs</h2>
+        <Typography variant='h2'>
+        blogs
+        </Typography>
         <Notification />
         <Login />
       </div>
@@ -66,7 +69,9 @@ const App = () => {
   return (
     <div>
       <NavBar />
-      <h2>blog app</h2>
+      <Typography variant='h4'>
+        Blog app
+      </Typography>
       <Notification />
       <Routes>
         <Route path="/" element={<BlogList blogFormRef={blogFormRef} handleVote={handleVote} />} />

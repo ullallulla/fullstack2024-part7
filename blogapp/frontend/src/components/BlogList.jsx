@@ -3,6 +3,8 @@ import NewBlog from './NewBlog'
 import { Link } from 'react-router-dom'
 import Blog from './Blog'
 import { useSelector } from 'react-redux'
+import { List, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material'
+import FeedIcon from '@mui/icons-material/Feed'
 
 const BlogList = ({ blogFormRef, handleVote }) => {
   const blogs = useSelector(state => state.blogs)
@@ -16,19 +18,41 @@ const BlogList = ({ blogFormRef, handleVote }) => {
     marginBottom: 5,
   }
   return (
+    // <div>
+    //   <Togglable buttonLabel='create new blog' ref={blogFormRef}>
+    //     <NewBlog blogFormRef={blogFormRef} />
+    //   </Togglable>
+    //   {[...blogs].sort(byLikes).map((blog) => (
+    //     <div key={blog.id}>
+    //       <Link to={`/blogs/${blog.id}`}>
+    //         <div style={style}>
+    //           {blog.title} by {blog.author}
+    //         </div>
+    //       </Link>
+    //     </div>
+    //   ))}
+    // </div>
     <div>
       <Togglable buttonLabel='create new blog' ref={blogFormRef}>
         <NewBlog blogFormRef={blogFormRef} />
       </Togglable>
-      {[...blogs].sort(byLikes).map((blog) => (
-        <div key={blog.id}>
-          <Link to={`/blogs/${blog.id}`}>
-            <div style={style}>
-              {blog.title} by {blog.author}
-            </div>
-          </Link>
-        </div>
-      ))}
+      <List>
+        {[...blogs].sort(byLikes).map((blog) => (
+          <div key={blog.id}>
+            <ListItem>
+              <ListItemIcon>
+                <FeedIcon />
+              </ListItemIcon>
+              <ListItemButton
+                component={Link}
+                to={`/blogs/${blog.id}`}>
+                <ListItemText primary={`${blog.title} by ${blog.author}`} />
+
+              </ListItemButton>
+            </ListItem>
+          </div>
+        ))}
+      </List>
     </div>
   )
 }

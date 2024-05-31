@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { createBlog } from '../reducers/blogReducer'
-import { setNotification } from '../reducers/notificationReducer'
+import { Button, TextField } from '@mui/material'
+import { Typography } from '@mui/material'
 
 const NewBlog = ({ blogFormRef }) => {
   const dispatch = useDispatch()
@@ -24,7 +25,6 @@ const NewBlog = ({ blogFormRef }) => {
   const handleSubmit = (event) => {
     event.preventDefault()
     dispatch(createBlog({ title, url, author }))
-    dispatch(setNotification(`Blog created: ${title}, ${author}`, 5))
     blogFormRef.current.toggleVisibility()
     setAuthor('')
     setTitle('')
@@ -33,36 +33,20 @@ const NewBlog = ({ blogFormRef }) => {
 
   return (
     <div>
-      <h2>Create a New Blog</h2>
+      <Typography variant='h5'>
+        Create a New Blog
+      </Typography>
       <form onSubmit={handleSubmit}>
         <div>
-          <label>Title:</label>
-          <input
-            type='text'
-            data-testid='title'
-            value={title}
-            onChange={handleTitleChange}
-          />
+          <TextField label='Title' value={title} onChange={handleTitleChange}/>
         </div>
         <div>
-          <label>URL:</label>
-          <input
-            type='text'
-            data-testid='url'
-            value={url}
-            onChange={handleUrlChange}
-          />
+          <TextField label='URL' value={url} onChange={handleUrlChange}/>
         </div>
         <div>
-          <label>Author:</label>
-          <input
-            type='text'
-            data-testid='author'
-            value={author}
-            onChange={handleAuthorChange}
-          />
+          <TextField label='Author' value={author} onChange={handleAuthorChange}/>
         </div>
-        <button type='submit'>Create</button>
+        <Button type='submit' variant='contained' color='secondary'>Create</Button>
       </form>
     </div>
   )

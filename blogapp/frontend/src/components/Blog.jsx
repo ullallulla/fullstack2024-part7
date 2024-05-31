@@ -4,6 +4,9 @@ import storage from '../services/storage'
 import { useDispatch } from 'react-redux'
 import { deleteBlog, createComment } from '../reducers/blogReducer'
 import { setNotification } from '../reducers/notificationReducer'
+import { List, ListItem, ListItemButton, ListItemText, Typography, Box, Grid, TextField } from '@mui/material'
+import { Link } from 'react-router-dom'
+import { Button } from '@mui/material'
 
 const Blog = ({ blog, handleVote }) => {
   const [visible, setVisible] = useState(false)
@@ -11,7 +14,6 @@ const Blog = ({ blog, handleVote }) => {
 
   const nameOfUser = blog.user ? blog.user.name : 'anonymous'
   const comments = blog.comments
-  console.log(comments, 'blog comments')
   const style = {
     border: 'solid',
     padding: 10,
@@ -36,45 +38,40 @@ const Blog = ({ blog, handleVote }) => {
 
   return (
     <div className='blog'>
-
-      <h1>{blog.title} by {blog.author}</h1>
-
-      <div>
-        <div>
-          <a href={blog.url}>{blog.url}</a>
-        </div>
-        <div>
-            likes {blog.likes}
-          <button style={{ marginLeft: 3 }} onClick={() => handleVote(blog)}>
+      <Typography variant='h4'>
+        <strong>{blog.title} by {blog.author}</strong>
+      </Typography>
+      <Box>
+        <Typography component={Link} to={`${blog.url}`}>{blog.url}</Typography>
+        <Grid container alignItems="center" spacing={1}>
+          <Grid item>
+            <Typography>likes {blog.likes}</Typography>
+          </Grid>
+          <Grid item>
+            <Button variant="contained" color="secondary" onClick={() => handleVote(blog)}>
               like
-          </button>
-        </div>
-        <div>added by {nameOfUser}</div>
+            </Button>
+          </Grid>
+        </Grid>
+        <Typography>added by {nameOfUser}</Typography>
         {canRemove && (
-          <button onClick={() => handleDelete(blog)}>remove</button>
+          <Button variant="outlined" color="secondary" onClick={() => handleDelete(blog)}>
+            remove
+          </Button>
         )}
-        <h3>comments</h3>
-        <div>
-
-          <form onSubmit={addComment}>
-            <div>
-              <input
-                type='text'
-                name='content'
-              />
-            </div>
-            <button type='submit'>add comment</button>
-          </form>
-        </div>
-        {comments.map((comment) => (
-          <div key={comment.id}>
-            <div>
-              <li>{comment.content}</li>
-            </div>
+        <Typography variant="h5">comments</Typography>
+        <form onSubmit={addComment}>
+          <div>
+            <TextField name='content'/>
           </div>
-        ))}
-      </div>
-
+          <Button type='submit' variant="contained" color="secondary">
+            add comment
+          </Button>
+        </form>
+      </Box>
+      {comments.map((comment) => (
+        <Typography key={comment.id}>{comment.content}</Typography>
+      ))}
     </div>
   )
 }
